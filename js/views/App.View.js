@@ -21,17 +21,19 @@ define([
 			// inp = input
 			this.input = this.options.input;
 			this.app = this.options.app;
+
+			this.app.mediator.subscribe("node:removed", _.bind(this.renderNodes, this));
 		},
 		render: function() {
 			var that = this;
-			this.renderNode();
+			this.renderNodes(this.fetchFromLocal());
 			// when done rendering content, render tag
 			this.renderContent(function() {
 				that.renderTag();
 			});
 		},
-		renderNode: function() {
-			var nodes = this.fetchFromLocal();
+		renderNodes: function(nodes) {
+			nodes.type = "document";
 			nodes.app = this.app;
 			var model = this.topModel = new NodeModel(nodes),
 				view = new NodeView({app: this.app, model: model});

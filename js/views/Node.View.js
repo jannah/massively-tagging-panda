@@ -17,7 +17,7 @@ define([
 		className: "node",
 		initialize: function() {
 			this.app = this.options.app;
-			this.parent = this.options.parent; // parent NodeView
+			this.parent = this.options.parent; // parent NodeModal
 			this.model = this.options.model;
 			this.droppable = true;
 
@@ -41,6 +41,7 @@ define([
 			return this;
 		},
 		renderDropped: function() {
+			console.log(this.model);
 			this.$(".dropped:first").html(_.template(NodeDroppedTemplate, this.model.attributes));
 		},
 		removeChildren: function() {
@@ -121,11 +122,18 @@ define([
 		},
 		/*
 		remove the node:
-			1.  from the DOM, remove all children and itself
-			2.  from the model, 
+			1.  from the DOM, remove all children and itself if it is not root.
+			2.  from the model, remove itself from its parent collection if it is not root.
+				if it is root, send a message to create a new model and view
 		*/
 		removeNode: function() {
-
+			this.$el.remove();
+			if (this.parent) {
+				this.parent.children.remove(this.model);
+				
+			} else {
+				this.app.mediator.publish("node:removed", {});
+			}
 		}
 	});
 

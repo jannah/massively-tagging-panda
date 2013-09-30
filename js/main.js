@@ -5,7 +5,8 @@ require.config({
         "underscore": "underscore",
         "backbone": "backbone",
         "bootstrap": "bootstrap",
-        "d3": "d3.v3"
+        "d3": "d3.v3",
+        "mediator": "mediator"
     },
     shim: {
         "underscore": {
@@ -25,11 +26,13 @@ require([
     "jquery",
     "underscore",
     "backbone",
+    "mediator",
     "app/views/App.View"
 ], function(
     $,
     _,
     Backbone,
+    Mediator,
     AppView
 ) {
 
@@ -42,6 +45,7 @@ require([
     app.nameBadges = {sentence: "badge-info", title: "badge-inverse"};
     app.btnTypes = {tag: "btn-primary", attr: "btn-info"};
     app.views = {};
+    app.mediator = new Mediator();
 
     $.get("xml/2h6.xml", function(data) {
 
