@@ -43,12 +43,20 @@
 		<td>
 			<% if (type === "subunit") { %>
 				<div class="nameRadio sentence">
-					<input type="radio" value="sentence" />
+					<input type="radio" value="sentence" 
+					<% if (name === "sentence") { %>
+					checked
+					<% } %>
+					/>
 					sentence
 				</div>
 			<% } else if (type === "metadata") { %>
 				<div class="nameRadio title">
-					<input type="radio" value="title" />
+					<input type="radio" value="title" 
+					<% if (name === "title") { %>
+					checked
+					<% } %>
+					/>
 					title
 				</div>
 			<% } %>

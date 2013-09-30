@@ -47,29 +47,34 @@ define([
 			model.set("type", val, {silent: true});
 			model.set("badge_type", badge);
 		},
+		/*
+		when a name is set or changed, we must first check:
+			1.  was it set to "sentence" or "title"?  if so, make sure it is unique.
+			2.  set the name_badge to the appropriate badge.
+		*/
 		setName: function(model, val) {
-			var badge,
-				names = {};
-			_.chain(this.app.views)
-				.values()
-				.each(function(view) {
-					names[view.model.get("name")] = view.model;
-				});
-				console.log(names);
+			var badge = "",
+				views = _.chain(this.app.views)
+					.values()
+					.filter(function(view) {
+						return view.model.get("name") === val;
+					}).value();
 			if (val === "title") {
 				badge = this.app.nameBadges.title;
-				console.log("title", names.title);
-				if (!_.isEmpty(names)) names.title.set("name", ""); // need to figure out error message;
-
 			} else if (val === "sentence") {
 				badge = this.app.nameBadges.sentence;
-				if (!_.isEmpty(names)) names.sentence.set("name", "");
-				console.log("sentence", names.sentence);
-			} else {
-				badge = "";
 			}
-			model.set("name", val, {silent: true});
 			model.set("name_badge", badge);
+
+			// if the value is not unique
+			if (views.length > 1) {
+				_.each(views, function(view) {
+					if (view.model !== model) {
+						view.model.set("name", "");
+						// todo: send a warning message
+					}
+				});
+			}
 		},
 		setTag: function(model, val) {
 			if (val) {
