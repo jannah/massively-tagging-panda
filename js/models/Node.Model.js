@@ -31,6 +31,12 @@ define([
 				NodesCollection = NodesCollection || require("app/collections/Nodes.Collection");
 				this.children = new NodesCollection();
 			}
+
+			// also make sure all children are passed this.app
+			var that = this;
+			_.each(val, function(obj) {
+				obj.app = that.app;
+			});
 			this.children.reset(val);
 		},
 		setType: function(model, val) {
@@ -87,6 +93,21 @@ define([
 				model.set("tag", "");
 				model.set("btn_type", this.app.btnTypes.attr);
 			}
+		},
+		toJSON: function() {
+			var relevant_keys = ["tag", "type", "name"],
+				json = {};
+
+			_.each(this.attributes, function(val, key) {
+				if (_.contains(relevant_keys, key)) {
+					json[key] = val;
+				}
+			});
+
+			// take care of the children
+			json.children = this.children.toJSON();
+
+			return json;
 		}
 	});
 

@@ -21,7 +21,6 @@ define([
 			// inp = input
 			this.input = this.options.input;
 			this.app = this.options.app;
-			console.log(this.input);
 		},
 		render: function() {
 			var that = this;
@@ -32,41 +31,9 @@ define([
 			});
 		},
 		renderNode: function() {
-			var obj = {
-				app: this.app,
-				type: "document",
-				name: "document",
-				tag: "TEI",
-				children: [
-					{
-						app: this.app,
-						type: "subunit",
-						name: "sentence",
-						tag: "head",
-						children: [
-							{
-								app: this.app,
-								type: "metadata",
-								name: "author",
-								tag: "author"
-							}
-						]
-					},
-					{
-						app: this.app,
-						type: "metadata",
-						name: "title",
-						tag: "title"
-					},
-					{
-						app: this.app,
-						type: "subunit",
-						name: "name",
-						tag: "name"
-					}
-				]
-			};
-			var model = new NodeModel(obj),
+			var nodes = this.fetchFromLocal();
+			nodes.app = this.app;
+			var model = this.topModel = new NodeModel(nodes),
 				view = new NodeView({app: this.app, model: model});
 			this.$("#tagHierarchy").append(view.render().el);
 			this.app.views[model.cid] = view;
@@ -81,6 +48,19 @@ define([
 			this.$("#content").append(view.render().el);
 
 			callback();
+		},
+		events: {
+			"click .save": "saveToLocal"
+		},
+		/*
+		save to local storage, do not hit the server unless the user is done
+		*/
+		saveToLocal: function() {
+			localStorage["nodes"] = JSON.stringify(this.topModel);
+		},
+		fetchFromLocal: function() {
+			var nodes = (localStorage["nodes"] ? $.parseJSON(localStorage["nodes"]) : {})
+			return nodes;
 		}
 	});
 });

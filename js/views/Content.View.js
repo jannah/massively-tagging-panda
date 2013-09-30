@@ -50,7 +50,6 @@ define([
 		highlight: function() {
 			this.$el.addClass("highlight");
 			var top = this.$el.offset().top - 25;
-			console.log(top);
 			$(window).scrollTop(top);
 		}
 	});

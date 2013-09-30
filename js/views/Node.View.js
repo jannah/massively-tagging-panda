@@ -41,7 +41,6 @@ define([
 			return this;
 		},
 		renderDropped: function() {
-			console.log(this.el, "render drop");
 			this.$(".dropped:first").html(_.template(NodeDroppedTemplate, this.model.attributes));
 		},
 		removeChildren: function() {
@@ -67,7 +66,8 @@ define([
 			"drop .undropped:first": "drop",
 			// "hidden .modal:first": "showDropped",
 			"click .edit:first": "edit",
-			"click .addChild:first": "addChild"
+			"click .addChild:first": "addChild",
+			"click .remove:first": "removeNode"
 		},
 		dragover: function(e) {
 			e.preventDefault();
@@ -114,11 +114,18 @@ define([
 
 		},
 		edit: function() {
-			console.log("edit");
 			this.modal.open();
 		},
 		addChild: function() {
 			this.model.children.add({app: this.app});
+		},
+		/*
+		remove the node:
+			1.  from the DOM, remove all children and itself
+			2.  from the model, 
+		*/
+		removeNode: function() {
+
 		}
 	});
 

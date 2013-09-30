@@ -41,7 +41,6 @@ define([
 			}
 		},
 		open: function() {
-			console.log("open", this.model.get("tag"));
 			this.$el.modal("show");
 		},
 		events: {
@@ -57,7 +56,6 @@ define([
 		nameRadioChecked: function(e) {
 			var val = $(e.target).val();
 			this.model.set("name", val);
-			console.log(val);
 		},
 		nameTextChanged: function(e) {
 			var val = $(e.target).val();
