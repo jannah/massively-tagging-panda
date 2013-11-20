@@ -20,11 +20,16 @@ define([
 			// this.attributes.name = this.attributes.name || "";
 			// this.attributes.type = this.attributes.type || "";
 
-			this.on("change:children", this.setChildren);
-			this.on("change:type", this.setType);
-			this.on("change:name", this.setName);
-			this.on("change:tag", this.setTag);
-			this.on("change:attr", this.setAttr);
+			this.on("change", this.attrChanged, this);
+			this.children.on("add remove", this.attrChanged, this);
+			this.on("change:children", this.setChildren, this);
+			this.on("change:type", this.setType, this);
+			this.on("change:name", this.setName, this);
+			this.on("change:tag", this.setTag, this);
+			this.on("change:attr", this.setAttr, this);
+		},
+		attrChanged: function(model) {
+			this.app.mediator.publish("node:save");
 		},
 		setChildren: function(model, val) {
 			if (!this.children) {

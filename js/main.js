@@ -27,12 +27,14 @@ require([
     "underscore",
     "backbone",
     "mediator",
+    "app/routers/History.Router",
     "app/views/App.View"
 ], function(
     $,
     _,
     Backbone,
     Mediator,
+    HistoryRouter,
     AppView
 ) {
 
@@ -41,11 +43,13 @@ require([
         app = {};
     app.contentHash = {};
     app.contentNested = {};
+    app.tagHash = {};
     app.badges = {document: "badge-warning", subunit: "badge-success", metadata: "badge-important"};
     app.nameBadges = {sentence: "badge-info", title: "badge-inverse"};
     app.btnTypes = {tag: "btn-primary", attr: "btn-info"};
     app.views = {};
     app.mediator = new Mediator();
+    app.history = 0;
 
     $.get("xml/2h6.xml", function(data) {
 

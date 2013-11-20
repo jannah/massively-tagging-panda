@@ -55,9 +55,17 @@ define([
 			$(this.els.tag).addClass("disabled");
 			$(this.els.tag).attr("draggable", false);
 		},
+		enableTag: function() {
+			$(this.els.tag).removeClass("disabled");
+			$(this.els.tag).attr("draggable", true);
+		},
 		disableAttr: function(attr) {
 			$(this.els[attr]).addClass("disabled");
 			$(this.els[attr]).attr("draggable", false);
+		},
+		enableAttr: function(attr) {
+			$(this.els[attr]).removeClass("disabled");
+			$(this.els[attr]).attr("draggable", true);
 		},
 		events: {
 			"mouseenter .tagButtons:first": "mouseenter",

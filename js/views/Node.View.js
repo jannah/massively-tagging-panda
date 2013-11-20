@@ -41,7 +41,6 @@ define([
 			return this;
 		},
 		renderDropped: function() {
-			console.log(this.model);
 			this.$(".dropped:first").html(_.template(NodeDroppedTemplate, this.model.attributes));
 		},
 		removeChildren: function() {
