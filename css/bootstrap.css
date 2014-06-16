@@ -5641,6 +5641,9 @@ a.thumbnail:focus {
   vertical-align: baseline;
   background-color: #999999;
 }
+.badge-disabled {
+	opacity: .2;
+}
 
 .label {
   -webkit-border-radius: 3px;

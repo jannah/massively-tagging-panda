@@ -41,7 +41,7 @@ define([
 			return this;
 		},
 		renderDropped: function() {
-			console.log(this.model);
+			// console.log(this.model);
 			this.$(".dropped:first").html(_.template(NodeDroppedTemplate, this.model.attributes));
 		},
 		removeChildren: function() {
@@ -89,7 +89,7 @@ define([
 					this.model.set("tag", name);
 					this.tag.disableTag();
 				} else {
-					this.model.set("attr", name)
+					this.model.set("attr", name);
 					this.tag.disableAttr(name);
 				}
 				this.createModal();

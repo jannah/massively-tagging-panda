@@ -1,12 +1,21 @@
-define(["jquery", "underscore", "backbone", "d3", "text!app/templates/Tag.Template.html"], function($, _, Backbone, d3, TagTemplate)
-{
-	var TagView = Backbone.View.extend({
-		className : "tagLine",
-		initialize : function()
-		{
+define([
+	"jquery",
+	"underscore",
+	"backbone",
+	"d3",
+	"text!app/templates/TagAuto.Template.html"
+], function(
+	$,
+	_,
+	Backbone,
+	d3,
+	TagTemplate
+) {
+	var TagAutoView = Backbone.View.extend({
+		className: "tagLine",
+		initialize: function() {
 			this.app = this.options.app;
 			this.obj = this.options.obj;
-			this.xpaths = this.options.xpaths;
 			this.id = _.keys(this.obj)[0];
 			this.children = this.obj[this.id];
 			this.collapsed = false;
@@ -14,85 +23,68 @@ define(["jquery", "underscore", "backbone", "d3", "text!app/templates/Tag.Templa
 			this.els = {};
 			this.highlightClicked = 0;
 		},
-		render : function()
-		{
+		render: function() {
 			this.$el.html(_.template(TagTemplate, this.contents[0].obj));
-			
+
 			var that = this;
 			this.els.tag = this.$(".tag:first")[0];
-			this.$(".tagButtons:first .attr").each(function()
-			{
+			this.$(".tagButtons:first .attr").each(function() {
 				var text = $(this).text();
 				that.els[text] = this;
 			});
-						
-			_.each(this.children, function(child)
-			{
-				var childId = _.keys(child)[0];		
-				var myXPaths = this.app.contentHash[childId][0].xpaths;
-				var view = new TagView({
-					obj : child,
-					app : that.app,
-					xpaths: myXPaths
-				});
+
+			_.each(this.children, function(child) {
+				var view = new TagAutoView({obj: child, app: that.app});
 				that.$(".tagChildren:first").append(view.render().el);
 			});
 
 			return this;
 		},
-		drag : function()
-		{
-			var drag = d3.behavior.drag().on("dragstart", function()
-			{
+		drag: function() {
+			var drag = d3.behavior.drag()
+				.on("dragstart", function() {
 
-			}).on("drag", function()
-			{
-				// console.log("drag");
-			}).on("dragend", function()
-			{
+				}).on("drag", function() {
+					console.log("drag");
+				}).on("dragend", function() {
 
-			});
+				});
 
 			return drag;
 		},
-		disableTag : function()
-		{
+		disableTag: function() {
 			$(this.els.tag).addClass("disabled");
 			$(this.els.tag).attr("draggable", false);
 		},
-		disableAttr : function(attr)
-		{
+		disableAttr: function(attr) {
 			$(this.els[attr]).addClass("disabled");
 			$(this.els[attr]).attr("draggable", false);
 		},
-		events : {
-			"mouseenter .tagButtons:first" : "mouseenter",
-			"mouseleave .tagButtons:first" : "mouseleave",
-			"click .plus:first" : "expand",
-			"click .minus:first" : "collapse",
-			"click .tagButtons:first .tag" : "highlight",
-			"click .tagButtons:first .attr" : "highlight",
-			"dragstart .tagButtons:first .tag" : "dragstart",
-			"dragstart .tagButtons:first .attr" : "dragstart"
+		events: {
+			"mouseenter .tagButtons:first": "mouseenter",
+			"mouseleave .tagButtons:first": "mouseleave",
+			"click .plus:first": "expand",
+			"click .minus:first": "collapse",
+			"click .tagButtons:first .tag": "highlight",
+			"click .tagButtons:first .attr": "highlight",
+			"dragstart .tagButtons:first .tag": "dragstart",
+			"dragstart .tagButtons:first .attr": "dragstart"
 			// "drag .tagButtons:first .tag": "drag",
 			// "dragend .tagButtons:first .tag": "dragend"
 		},
-		mouseenter : function()
-		{
+		mouseenter: function() {
 			if (this.children.length > 0) {
 				this.$(".icons:first").removeClass("hidden");
 				this.$(".tagChildren:first").addClass("bordered");
 			}
 		},
-		mouseleave : function()
-		{
+		mouseleave: function() {
 			if (this.children.length > 0 && !this.collapsed) {
 				this.$(".icons:first").addClass("hidden");
 				this.$(".tagChildren:first").removeClass("bordered");
-			}
+			}	
 		},
-		expand : function()
-		{
+		expand: function() {
 			if (this.children.length > 0) {
 				this.$(".tagChildren:first").show();
 				this.$(".minus:first").show();
@@ -100,8 +92,7 @@ define(["jquery", "underscore", "backbone", "d3", "text!app/templates/Tag.Templa
 				this.collapsed = false;
 			}
 		},
-		collapse : function()
-		{
+		collapse: function() {
 			if (this.children.length > 0) {
 				this.$(".tagChildren:first").hide();
 				this.$(".minus:first").hide();
@@ -109,17 +100,22 @@ define(["jquery", "underscore", "backbone", "d3", "text!app/templates/Tag.Templa
 				this.collapsed = true;
 			}
 		},
-		highlight : function()
-		{
+		highlight: function() {
 			$(".highlight").removeClass("highlight");
 			// _.each(this.contents, function(content) { // ContentView
 			// 	content.highlight();
 			// });
 
 			var num = this.highlightClicked % this.contents.length;
-			// console.log(num);
 			this.contents[num].highlight();
 			this.highlightClicked += 1;
+		},
+		disable: function(){
+			
+			//TODO: add disable functionality 
+		},
+		enable : function(){
+			//TODO: add enable functionality
 		},
 		// clickAttr: function() {
 		// 	console.log("click attr");
@@ -128,15 +124,15 @@ define(["jquery", "underscore", "backbone", "d3", "text!app/templates/Tag.Templa
 		// 		content.focusAttr();
 		// 	});
 		// },
-		dragstart : function(e)
-		{
-			var name = $(e.target).text(), type = $(e.target).hasClass("tag") ? "tag" : "attr";
-			// console.log(this);
+		dragstart: function(e) {
+			var name = $(e.target).text(),
+				type = $(e.target).hasClass("tag") ? "tag" : "attr";
+			console.log(type);
 
 			this.app.dragTarget = {
-				type : type,
-				name : name,
-				view : this
+				type: type,
+				name: name,
+				view: this
 			};
 
 		},
@@ -150,5 +146,5 @@ define(["jquery", "underscore", "backbone", "d3", "text!app/templates/Tag.Templa
 
 	});
 
-	return TagView;
-}); 
+	return TagAutoView;
+});

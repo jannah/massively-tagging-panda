@@ -1,0 +1,18 @@
+<span class="btn <%= btn_type %>"> <% if (tag) { %>
+	<%= tag %>
+	<% } else if (attr) { %>
+	<%= attr %><% } %> 
+</span>
+<span class="badge <%= badge_type %>"><%= type.charAt(0) %></span>
+<% if (name_badge) { %>
+<span class="badge <%= name_badge %>"><%= name.charAt(0) %></span>
+<% } %>
+<% if(type==="metadata"){ %>
+<span class="badge meta-badge <% if(!nameIsDisplayed) badge-disabled %>">Name</span>
+<span class="badge meta-badge <% if(!valueIsDisplayed) badge-disabled %>">Value</span>
+<span class="badge meta-badge <% if(!isCategory) badge-disabled %>">Category</span>
+<% } %>
+<span class="btn addChild"><i class="icon-plus" /></span>
+<span class="btn edit"><i class="icon-pencil" /></span>
+<i class="icon-hide hide" />
+<i class="icon-remove remove" />
