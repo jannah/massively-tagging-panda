@@ -6,7 +6,7 @@ define([
     // "app/views/Node.View",
     "app/views/NodeAuto.View",
     "app/views/Content.View",
-    "app/views/Tag.View",
+//    "app/views/Tag.View",
     "app/views/TagAuto.View",
     "app/processConfig"
 ], function(
@@ -16,7 +16,7 @@ define([
         NodeModel,
         NodeView,
         ContentView,
-        TagView,
+//        TagView,
         TagAutoView,
         ProcessConfig
         ) {
@@ -25,41 +25,48 @@ define([
         initialize: function() {
             // inp = input
             this.input = this.options.input;
+            
             this.app = this.options.app;
-
             this.app.mediator.subscribe("node:removed", _.bind(this.renderNodes, this));
         },
         render: function() {
+            console.log(this.input);
             var that = this;
-            this.renderNodes(this.fetchFromLocal());
+//            this.renderNodes(this.fetchFromLocal());
+            this.renderNodes(this.input);
             // when done rendering content, render tag
             this.renderContent(function() {
-                that.renderTag();
-                // that.renderAutoTag();
+//                that.renderTag();
+                that.renderAutoTag();
             });
         },
         renderNodes: function(nodes) {
-            // console.log(nodes);
+             console.log(nodes);
             nodes.type = "document";
             // nodes['xpaths'] = this.input.xpaths;
             nodes.app = this.app;
 
-            var model = this.topModel = new NodeModel(nodes),
-                    view = new NodeView({app: this.app, model: model});
-            this.$("#tagHierarchy").append(view.render().el);
-            this.app.views[model.cid] = view;
+            var model = this.topModel = new NodeModel(nodes);
+//            ,                    view = new NodeView({app: this.app, model: model});
+            console.log(model.toJSON_Simple());
+//            this.$("#tagHierarchy").append(view.render().el);
+//            this.app.views[model.cid] = view;
         },
         /**
          * function to render the initial tag tree on the left 
          */
-        renderTag: function() {
-            // console.log(this);
-            var view = new TagView({obj: this.app.contentNested, app: this.app, xpaths: this.input.xpaths});
-            this.$("#tagContainer").append(view.render().el);
-
-        },
+        /*
+         renderTag: function() {
+         // console.log(this);
+         var view = new TagView({obj: this.app.contentNested, app: this.app, xpaths: this.input.xpaths});
+         this.$("#tagContainer").append(view.render().el);
+         
+         },*/
+    renderTree: function(){
+//      var view = new TreeView({)  
+    },
         renderAutoTag: function() {
-            var view = new TagAutoView({obj: this.app.contentNested, app: this.app});
+            var view = new TagAutoView({obj: this.app.contentNested, app: this.app, xpaths: this.input.xpaths});
             this.$("#tagAutoContainer").append(view.render().el);
         },
         renderContent: function(callback) {

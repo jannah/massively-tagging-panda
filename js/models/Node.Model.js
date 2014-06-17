@@ -48,15 +48,15 @@ define(["jquery", "underscore", "backbone", "app/collections/Nodes.Collection"],
                 NodesCollection = NodesCollection || require("app/collections/Nodes.Collection");
                 this.children = new NodesCollection();
             }
-            var myName = this.attributes.tag + "";
             // also make sure all children are passed this.app
             var that = this;
+            var myName = ((that.attributes.tagName) ? that.attributes.tagName : that.attributes.tag) + "";
+//            console.log(that.attributes);
             _.each(val, function(obj)
             {
                 obj.app = that.app;
                 obj.belongsTo = myName;
-                obj.xpaths = that.attributes.xpaths;
-//                console.log(obj);
+//                obj.xpaths = that.attributes.xpaths;
             });
             this.children.reset(val);
         },
@@ -198,7 +198,7 @@ define(["jquery", "underscore", "backbone", "app/collections/Nodes.Collection"],
 
             if (this.attributes.type === "metadata") {
                 json["propertyName"] = this.attributes.tag;
-                json["displayName"] = this.attributes.name;
+//                json["displayName"] = this.attributes.name;
                 // json["type"] = this.attributes.dataType;
 
             } else if (this.attributes.type === "subunit") {
