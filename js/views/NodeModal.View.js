@@ -18,7 +18,7 @@ define([
 	return Backbone.View.extend({
 		className: "modal hide",
 		initialize: function() {
-			console.log(this);
+//			console.log(this);
 			this.app = this.options.app;
 			this.model = this.options.model;
 			this.parent = this.options.parent; // parent model
